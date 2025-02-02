@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW.AOC.Contracts", "GW.AOC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW.AOC.Solvers", "GW.AOC.Solvers\GW.AOC.Solvers.csproj", "{84CD6BE4-1561-4B00-9DA4-EB419A58B147}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW.AOC.Services", "GW.AOC.Services\GW.AOC.Services.csproj", "{63D849DA-5CF8-4E37-952E-D40FF9C8970E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +34,9 @@ Global
 		{84CD6BE4-1561-4B00-9DA4-EB419A58B147}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84CD6BE4-1561-4B00-9DA4-EB419A58B147}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84CD6BE4-1561-4B00-9DA4-EB419A58B147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63D849DA-5CF8-4E37-952E-D40FF9C8970E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63D849DA-5CF8-4E37-952E-D40FF9C8970E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63D849DA-5CF8-4E37-952E-D40FF9C8970E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63D849DA-5CF8-4E37-952E-D40FF9C8970E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

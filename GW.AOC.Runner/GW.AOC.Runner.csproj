@@ -6,7 +6,7 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
     </ItemGroup>
     <ItemGroup>
-      <None Update="Data\2024\Day1\puzzle1_input.txt">
+      <None Update="Data\Year2024\Day1\puzzle_input.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

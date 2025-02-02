@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using GW.AOC.Contracts.Models;
 using GW.AOC.Contracts.Solvers;
+using GW.AOC.Solvers.Models;
 
 // ReSharper disable UnusedMethodReturnValue.Local
 // ReSharper disable once CheckNamespace
@@ -10,6 +11,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSolverDependencies(this IServiceCollection services)
     {
+        services.AddServices();
         services.AddSolvers();
 
         return services;

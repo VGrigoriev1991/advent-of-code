@@ -1,5 +1,5 @@
-﻿using GW.AOC.Contracts.Models;
-using GW.AOC.Contracts.Solvers;
+﻿using GW.AOC.Contracts.Solvers;
+using GW.AOC.Solvers.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 var serviceProvider = new ServiceCollection()
