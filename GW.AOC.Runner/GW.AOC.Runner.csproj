@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Data\Year2024\Day1\puzzle_input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Year2024\Day2\puzzle_input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\GW.AOC.Contracts\GW.AOC.Contracts.csproj" />
+      <ProjectReference Include="..\GW.AOC.Solvers\GW.AOC.Solvers.csproj" />
+    </ItemGroup>
+</Project>
