@@ -5,17 +5,12 @@ namespace GW.AOC.Services;
 
 public class PuzzleDataFileReader : IPuzzleDataReader
 {
-    public List<(int, int)> ReadIntList(string inputFilePath)
+    public List<List<int>> ReadIntLists(string inputFilePath)
     {
         var allParts = ReadAllLineParts(inputFilePath, Delimiter.Space);
 
-        return allParts.Where(x => x.Count == 2)
-            .Select(
-                x =>
-                {
-                    var numbers = x.Select(int.Parse).ToArray();
-                    return (numbers[0], numbers[1]);
-                })
+        return allParts
+            .Select(x => x.Select(int.Parse).ToList())
             .ToList();
     }
 

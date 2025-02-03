@@ -2,5 +2,5 @@
 
 public interface IPuzzleDataReader
 {
-    List<(int, int)> ReadIntList(string inputFilePath);
+    List<List<int>> ReadIntLists(string inputFilePath);
 }
