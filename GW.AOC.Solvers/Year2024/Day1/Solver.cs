@@ -7,10 +7,10 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 {
     public Task SolvePartOneAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntList(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
 
-        var left = data.Select(x => x.Item1).Order().ToList();
-        var right = data.Select(x => x.Item2).Order().ToList();
+        var left = data.Select(x => x.First()).Order().ToList();
+        var right = data.Select(x => x.Last()).Order().ToList();
 
         var sum = 0L;
 
@@ -26,10 +26,10 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
     public Task SolvePartTwoAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntList(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
 
-        var left = data.Select(x => x.Item1).Order().ToList();
-        var right = data.Select(x => x.Item2).Order().ToList();
+        var left = data.Select(x => x.First()).Order().ToList();
+        var right = data.Select(x => x.Last()).Order().ToList();
 
         var dictionary = left.ToLookup(x => x).ToDictionary(x => x.Key, x => new Item(x.Count(), 0));
 
