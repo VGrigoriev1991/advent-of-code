@@ -5,6 +5,13 @@ namespace GW.AOC.Services;
 
 public class PuzzleDataFileReader : IPuzzleDataReader
 {
+    public string ReadAllText(string inputFilePath)
+    {
+        var sr = new StreamReader(inputFilePath);
+
+        return sr.ReadToEnd();
+    }
+
     public List<List<int>> ReadIntLists(string inputFilePath)
     {
         var allParts = ReadAllLineParts(inputFilePath, Delimiter.Space);
