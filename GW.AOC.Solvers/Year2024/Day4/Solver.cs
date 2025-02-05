@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using GW.AOC.Contracts.Models;
 using GW.AOC.Contracts.Services;
 using GW.AOC.Contracts.Solvers;
 using GW.AOC.Services.Extensions;
@@ -23,18 +24,6 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
         var points = results['X'];
 
-        var directions = new List<Point>
-        {
-            new(-1, -1),
-            new(-1, 0),
-            new(-1, 1),
-            new(0, -1),
-            new(0, 1),
-            new(1, -1),
-            new(1, 0),
-            new(1, 1)
-        };
-
         foreach (var item in results.Where(x => x.Key != 'X'))
         {
             foreach (var point in points)
@@ -43,9 +32,9 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
                 if (point.Direction == null)
                 {
-                    foreach (var direction in directions)
+                    foreach (var direction in PointConstants.AllDirections)
                     {
-                        var newPoint = new Point(lastPoint.X + direction.X, lastPoint.Y + direction.Y);
+                        var newPoint = lastPoint.GetNext(direction);
                         if (!data.ContainsItem(item.Key, newPoint))
                         {
                             continue;
@@ -61,9 +50,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                 }
                 else
                 {
-                    var newPoint = new Point(
-                        lastPoint.X + point.Direction!.Value.X,
-                        lastPoint.Y + point.Direction!.Value.Y);
+                    var newPoint = lastPoint.GetNext(point.Direction!.Value);
                     if (!data.ContainsItem(item.Key, newPoint))
                     {
                         continue;
