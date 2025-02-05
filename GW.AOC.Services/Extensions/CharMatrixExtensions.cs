@@ -13,4 +13,22 @@ public static class CharMatrixExtensions
 
         return false;
     }
+
+    public static List<Point> GetAllItemCoordinates(this List<List<char>> source, char symbol)
+    {
+        var result = new List<Point>();
+
+        for (var i = 0; i < source.Count; i++)
+        {
+            for (var j = 0; j < source[0].Count; j++)
+            {
+                if (source[i][j] == symbol)
+                {
+                    result.Add(new Point(i, j));
+                }
+            }
+        }
+
+        return result;
+    }
 }

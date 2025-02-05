@@ -19,16 +19,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
             { 'S', [] }
         };
 
-        for (var i = 0; i < data.Count; i++)
-        {
-            for (var j = 0; j < data[0].Count; j++)
-            {
-                if (data[i][j] == 'X')
-                {
-                    results['X'].Add(new PointsHolder { Points = [new Point(i, j)] });
-                }
-            }
-        }
+        results['X'].AddRange(data.GetAllItemCoordinates('X').Select(x => new PointsHolder { Points = [x] }));
 
         var points = results['X'];
 
@@ -99,18 +90,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
     {
         var data = puzzleDataReader.ReadCharMatrix(PuzzleDataFilePath);
 
-        var aPoints = new List<Point>();
-
-        for (var i = 0; i < data.Count; i++)
-        {
-            for (var j = 0; j < data[0].Count; j++)
-            {
-                if (data[i][j] == 'A')
-                {
-                    aPoints.Add(new Point(i, j));
-                }
-            }
-        }
+        var aPoints = data.GetAllItemCoordinates('A');
 
         var sum = 0L;
 
