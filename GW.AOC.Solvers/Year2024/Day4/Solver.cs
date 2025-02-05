@@ -32,7 +32,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
                 if (point.Direction == null)
                 {
-                    foreach (var direction in PointConstants.AllDirections)
+                    foreach (var direction in PointDirection.All)
                     {
                         var newPoint = lastPoint.GetNext(direction);
                         if (!data.ContainsItem(item.Key, newPoint))
@@ -84,19 +84,19 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         foreach (var aPoint in aPoints)
         {
             var isX =
-                (data.ContainsItem('M', new Point(aPoint.X - 1, aPoint.Y - 1))
-                 && data.ContainsItem('S', new Point(aPoint.X + 1, aPoint.Y + 1)))
-                || (data.ContainsItem('S', new Point(aPoint.X - 1, aPoint.Y - 1))
-                    && data.ContainsItem('M', new Point(aPoint.X + 1, aPoint.Y + 1)));
+                (data.ContainsItem('M', aPoint.GetNext(PointDirection.TopLeft))
+                 && data.ContainsItem('S', aPoint.GetNext(PointDirection.BottomRight)))
+                || (data.ContainsItem('S', aPoint.GetNext(PointDirection.TopLeft))
+                    && data.ContainsItem('M', aPoint.GetNext(PointDirection.BottomRight)));
             if (!isX)
             {
                 continue;
             }
 
-            isX = (data.ContainsItem('M', new Point(aPoint.X - 1, aPoint.Y + 1))
-                   && data.ContainsItem('S', new Point(aPoint.X + 1, aPoint.Y - 1)))
-                  || (data.ContainsItem('S', new Point(aPoint.X - 1, aPoint.Y + 1))
-                      && data.ContainsItem('M', new Point(aPoint.X + 1, aPoint.Y - 1)));
+            isX = (data.ContainsItem('M', aPoint.GetNext(PointDirection.TopRight))
+                   && data.ContainsItem('S', aPoint.GetNext(PointDirection.BottomLeft)))
+                  || (data.ContainsItem('S', aPoint.GetNext(PointDirection.TopRight))
+                      && data.ContainsItem('M', aPoint.GetNext(PointDirection.BottomLeft)));
             if (isX)
             {
                 sum++;
