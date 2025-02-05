@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using GW.AOC.Contracts.Services;
 using GW.AOC.Contracts.Solvers;
+using GW.AOC.Services.Extensions;
 
 namespace GW.AOC.Solvers.Year2024.Day4;
 
@@ -54,7 +55,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                     foreach (var direction in directions)
                     {
                         var newPoint = new Point(lastPoint.X + direction.X, lastPoint.Y + direction.Y);
-                        if (!IsLetter(data, item.Key, newPoint))
+                        if (!data.ContainsItem(item.Key, newPoint))
                         {
                             continue;
                         }
@@ -72,7 +73,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                     var newPoint = new Point(
                         lastPoint.X + point.Direction!.Value.X,
                         lastPoint.Y + point.Direction!.Value.Y);
-                    if (!IsLetter(data, item.Key, newPoint))
+                    if (!data.ContainsItem(item.Key, newPoint))
                     {
                         continue;
                     }
@@ -94,16 +95,50 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
-
-    private static bool IsLetter(List<List<char>> array, char letter, Point point)
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
     {
-        if (point is { X: >= 0, Y: >= 0 } && point.X < array.Count && point.Y < array[0].Count)
+        var data = puzzleDataReader.ReadCharMatrix(PuzzleDataFilePath);
+
+        var aPoints = new List<Point>();
+
+        for (var i = 0; i < data.Count; i++)
         {
-            return array[point.X][point.Y] == letter;
+            for (var j = 0; j < data[0].Count; j++)
+            {
+                if (data[i][j] == 'A')
+                {
+                    aPoints.Add(new Point(i, j));
+                }
+            }
         }
 
-        return false;
+        var sum = 0L;
+
+        foreach (var aPoint in aPoints)
+        {
+            var isX =
+                (data.ContainsItem('M', new Point(aPoint.X - 1, aPoint.Y - 1))
+                 && data.ContainsItem('S', new Point(aPoint.X + 1, aPoint.Y + 1)))
+                || (data.ContainsItem('S', new Point(aPoint.X - 1, aPoint.Y - 1))
+                    && data.ContainsItem('M', new Point(aPoint.X + 1, aPoint.Y + 1)));
+            if (!isX)
+            {
+                continue;
+            }
+
+            isX = (data.ContainsItem('M', new Point(aPoint.X - 1, aPoint.Y + 1))
+                   && data.ContainsItem('S', new Point(aPoint.X + 1, aPoint.Y - 1)))
+                  || (data.ContainsItem('S', new Point(aPoint.X - 1, aPoint.Y + 1))
+                      && data.ContainsItem('M', new Point(aPoint.X + 1, aPoint.Y - 1)));
+            if (isX)
+            {
+                sum++;
+            }
+        }
+
+        Console.WriteLine(sum);
+
+        return Task.CompletedTask;
     }
 }
 
