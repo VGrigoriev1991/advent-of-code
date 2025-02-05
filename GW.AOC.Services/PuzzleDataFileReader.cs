@@ -21,19 +21,29 @@ public class PuzzleDataFileReader : IPuzzleDataReader
             .ToList();
     }
 
+    public List<List<char>> ReadCharMatrix(string inputFilePath)
+    {
+        var lines = ReadAllLines(inputFilePath);
+        return lines.Select(x => x.ToCharArray().ToList()).ToList();
+    }
+
     private static List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
+    {
+        var lines = ReadAllLines(inputFilePath);
+        return lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
+    }
+
+    private static List<string> ReadAllLines(string inputFilePath)
     {
         var sr = new StreamReader(inputFilePath);
 
-        var result = new List<List<string>>();
+        var result = new List<string>();
 
         while (!sr.EndOfStream)
         {
             var line = sr.ReadLine();
 
-            var parts = line!.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            result.Add(parts);
+            result.Add(line ?? string.Empty);
         }
 
         return result;
