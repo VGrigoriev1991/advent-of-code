@@ -46,6 +46,9 @@ public class PuzzleDataFileReader : IPuzzleDataReader
     private List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
     {
         var lines = ReadAllLines(inputFilePath);
-        return lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
+        return ReadAllLineParts(lines, delimiter);
     }
+
+    private static List<List<string>> ReadAllLineParts(List<string> lines, string delimiter) =>
+        lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
 }
