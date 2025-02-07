@@ -1,6 +1,7 @@
 ﻿using GW.AOC.Contracts.Models;
 using GW.AOC.Contracts.Services;
 using GW.AOC.Contracts.Solvers;
+using GW.AOC.Services.Extensions;
 
 namespace GW.AOC.Solvers.Year2024.Day5;
 
@@ -10,41 +11,8 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
     {
         var data = puzzleDataReader.ReadAllLines(PuzzleDataFilePath);
 
-        var before = new Dictionary<int, HashSet<int>>();
-        var after = new Dictionary<int, HashSet<int>>();
-
-        var sequences = new List<int[]>();
-
-        foreach (var line in data)
-        {
-            if (line.Contains(Delimiter.VerticalBar))
-            {
-                var numbers = line.Split(Delimiter.VerticalBar, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-
-                if (!before.TryGetValue(numbers[1], out var valueBefore))
-                {
-                    valueBefore = [];
-                    before.Add(numbers[1], valueBefore);
-                }
-
-                if (!after.TryGetValue(numbers[0], out var valueAfter))
-                {
-                    valueAfter = [];
-                    after.Add(numbers[0], valueAfter);
-                }
-
-                valueBefore.Add(numbers[0]);
-                valueAfter.Add(numbers[1]);
-
-                continue;
-            }
-
-            if (line.Contains(Delimiter.Comma))
-            {
-                var sequence = line.Split(Delimiter.Comma, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-                sequences.Add(sequence);
-            }
-        }
+        var (before, after) = GetOrderedSequences(data);
+        var sequences = GetSequences(data);
 
         var result = GetMiddleValidSequenceNumbersSum(sequences, before, after, out _);
 
@@ -53,10 +21,53 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var data = puzzleDataReader.ReadAllLines(PuzzleDataFilePath);
+
+        var (before, after) = GetOrderedSequences(data);
+        var sequences = GetSequences(data);
+
+        GetMiddleValidSequenceNumbersSum(sequences, before, after, out var incorrectNumbers);
+
+        var result = 0L;
+
+        foreach (var seq in incorrectNumbers)
+        {
+            var newSequence = new List<int>();
+            while (seq.Count > 0)
+            {
+                for (var i = 0; i < seq.Count; i++)
+                {
+                    var sBefore = newSequence.ToArray();
+                    var sAfter = seq.Skip(i + 1).Union(seq.Take(i)).ToArray();
+
+                    if (sBefore.Length != 0 && (!before.ContainsKey(seq[i]) || sBefore.Any(x => !before[seq[i]].Contains(x))))
+                    {
+                        continue;
+                    }
+
+                    if (i != seq.Count - 1 && (!after.ContainsKey(seq[i]) || sAfter.Any(x => !after[seq[i]].Contains(x))))
+                    {
+                        continue;
+                    }
+
+                    newSequence.Add(seq[i]);
+                    seq.Remove(seq[i]);
+                    break;
+                }
+            }
+
+            result += newSequence[newSequence.Count / 2];
+        }
+
+        Console.WriteLine(result);
+
+        return Task.CompletedTask;
+    }
 
     private static long GetMiddleValidSequenceNumbersSum(
-        List<int[]> sequences,
+        List<List<int>> sequences,
         Dictionary<int, HashSet<int>> beforeNumbersSequence,
         Dictionary<int, HashSet<int>> afterNumbersSequence,
         out List<List<int>> incorrectNumbers)
@@ -67,7 +78,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
         foreach (var sequence in sequences)
         {
-            for (var i = 0; i < sequence.Length; i++)
+            for (var i = 0; i < sequence.Count; i++)
             {
                 if (!beforeNumbersSequence.ContainsKey(sequence[i]) && !afterNumbersSequence.ContainsKey(sequence[i]))
                 {
@@ -86,20 +97,49 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                     break;
                 }
 
-                if (i != sequence.Length - 1
+                if (i != sequence.Count - 1
                     && (!afterNumbersSequence.ContainsKey(sequence[i]) || sAfter.Any(x => !afterNumbersSequence[sequence[i]].Contains(x))))
                 {
                     incorrectNumbers.Add(sequence.ToList());
                     break;
                 }
 
-                if (i == sequence.Length - 1)
+                if (i == sequence.Count - 1)
                 {
-                    result += sequence[sequence.Length / 2];
+                    result += sequence[sequence.Count / 2];
                 }
             }
         }
 
         return result;
     }
+
+    private static (Dictionary<int, HashSet<int>>, Dictionary<int, HashSet<int>>) GetOrderedSequences(IEnumerable<string> lines)
+    {
+        var before = new Dictionary<int, HashSet<int>>();
+        var after = new Dictionary<int, HashSet<int>>();
+
+        foreach (var pair in lines.Where(x => x.Contains(Delimiter.VerticalBar)).ToIntLists(Delimiter.VerticalBar))
+        {
+            if (!before.TryGetValue(pair[1], out var valueBefore))
+            {
+                valueBefore = [];
+                before.Add(pair[1], valueBefore);
+            }
+
+            if (!after.TryGetValue(pair[0], out var valueAfter))
+            {
+                valueAfter = [];
+                after.Add(pair[0], valueAfter);
+            }
+
+            valueBefore.Add(pair[0]);
+            valueAfter.Add(pair[1]);
+        }
+
+        return (before, after);
+    }
+
+    private static List<List<int>> GetSequences(IEnumerable<string> lines) =>
+        lines.Where(x => x.Contains(Delimiter.Comma)).ToIntLists(Delimiter.Comma);
 }
