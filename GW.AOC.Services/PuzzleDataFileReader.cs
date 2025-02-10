@@ -12,28 +12,7 @@ public class PuzzleDataFileReader : IPuzzleDataReader
         return sr.ReadToEnd();
     }
 
-    public List<List<int>> ReadIntLists(string inputFilePath)
-    {
-        var allParts = ReadAllLineParts(inputFilePath, Delimiter.Space);
-
-        return allParts
-            .Select(x => x.Select(int.Parse).ToList())
-            .ToList();
-    }
-
-    public List<List<char>> ReadCharMatrix(string inputFilePath)
-    {
-        var lines = ReadAllLines(inputFilePath);
-        return lines.Select(x => x.ToCharArray().ToList()).ToList();
-    }
-
-    private static List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
-    {
-        var lines = ReadAllLines(inputFilePath);
-        return lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
-    }
-
-    private static List<string> ReadAllLines(string inputFilePath)
+    public List<string> ReadAllLines(string inputFilePath)
     {
         var sr = new StreamReader(inputFilePath);
 
@@ -48,4 +27,28 @@ public class PuzzleDataFileReader : IPuzzleDataReader
 
         return result;
     }
+
+    public List<List<int>> ReadIntLists(string inputFilePath)
+    {
+        var allParts = ReadAllLineParts(inputFilePath, Delimiter.Space);
+
+        return allParts
+            .Select(x => x.Select(int.Parse).ToList())
+            .ToList();
+    }
+
+    public List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
+    {
+        var lines = ReadAllLines(inputFilePath);
+        return ReadAllLineParts(lines, delimiter);
+    }
+
+    public List<List<char>> ReadCharMatrix(string inputFilePath)
+    {
+        var lines = ReadAllLines(inputFilePath);
+        return lines.Select(x => x.ToCharArray().ToList()).ToList();
+    }
+
+    private static List<List<string>> ReadAllLineParts(List<string> lines, string delimiter) =>
+        lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
 }

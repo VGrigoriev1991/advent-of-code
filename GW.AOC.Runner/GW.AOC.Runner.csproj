@@ -18,6 +18,15 @@
       <None Update="Data\Year2024\Day4\puzzle_input.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Data\Year2024\Day5\puzzle_input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Year2024\Day6\puzzle_input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\Year2024\Day7\puzzle_input.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\GW.AOC.Contracts\GW.AOC.Contracts.csproj" />
