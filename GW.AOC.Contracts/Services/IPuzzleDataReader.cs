@@ -8,5 +8,7 @@ public interface IPuzzleDataReader
 
     List<List<int>> ReadIntLists(string inputFilePath);
 
+    List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter);
+
     List<List<char>> ReadCharMatrix(string inputFilePath);
 }
