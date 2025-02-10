@@ -9,6 +9,24 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 {
     public Task SolvePartOneAsync(CancellationToken cancellationToken)
     {
+        var result = CalculateTotalCalibrationResult(2);
+
+        Console.WriteLine(result);
+
+        return Task.CompletedTask;
+    }
+
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var result = CalculateTotalCalibrationResult(3);
+
+        Console.WriteLine(result);
+
+        return Task.CompletedTask;
+    }
+
+    private long CalculateTotalCalibrationResult(int combinationsCount)
+    {
         var data = puzzleDataReader.ReadAllLineParts(PuzzleDataFilePath, Delimiter.Semicolon);
 
         var sequences = data.Select(dataItem => (long.Parse(dataItem[0]), dataItem[1].ToIntArray(Delimiter.Space))).ToList();
@@ -17,7 +35,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
         foreach (var sequence in sequences)
         {
-            var count = Math.Pow(2, sequence.Item2.Length - 1);
+            var count = Math.Pow(combinationsCount, sequence.Item2.Length - 1);
             var combination = Enumerable.Repeat(0, sequence.Item2.Length - 1).ToArray();
 
             for (var i = 0; i < count; i++)
@@ -29,16 +47,12 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                     break;
                 }
 
-                combination = GenerateNextCombination(combination, 1);
+                combination = GenerateNextCombination(combination, combinationsCount - 1);
             }
         }
 
-        Console.WriteLine(result);
-
-        return Task.CompletedTask;
+        return result;
     }
-
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private static long GetResult(int[] numbers, int[] operatorsCombination)
     {
@@ -46,13 +60,17 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
         for (var i = 1; i < numbers.Length; i++)
         {
-            if (operatorsCombination[i - 1] == 0)
+            switch (operatorsCombination[i - 1])
             {
-                result += numbers[i];
-            }
-            else
-            {
-                result *= numbers[i];
+                case 0:
+                    result += numbers[i];
+                    break;
+                case 1:
+                    result *= numbers[i];
+                    break;
+                default:
+                    result = long.Parse($"{result}{numbers[i]}");
+                    break;
             }
         }
 
@@ -61,19 +79,17 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
     private static int[] GenerateNextCombination(int[] currentCombination, int max)
     {
-        var result = new List<int>(currentCombination).ToArray();
-
-        for (var i = 0; i < result.Length; i++)
+        for (var i = 0; i < currentCombination.Length; i++)
         {
             if (currentCombination[i] < max)
             {
-                result[i] += 1;
+                currentCombination[i] += 1;
                 break;
             }
 
-            result[i] = 0;
+            currentCombination[i] = 0;
         }
 
-        return result;
+        return currentCombination;
     }
 }
