@@ -37,16 +37,16 @@ public class PuzzleDataFileReader : IPuzzleDataReader
             .ToList();
     }
 
+    public List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
+    {
+        var lines = ReadAllLines(inputFilePath);
+        return ReadAllLineParts(lines, delimiter);
+    }
+
     public List<List<char>> ReadCharMatrix(string inputFilePath)
     {
         var lines = ReadAllLines(inputFilePath);
         return lines.Select(x => x.ToCharArray().ToList()).ToList();
-    }
-
-    private List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter)
-    {
-        var lines = ReadAllLines(inputFilePath);
-        return ReadAllLineParts(lines, delimiter);
     }
 
     private static List<List<string>> ReadAllLineParts(List<string> lines, string delimiter) =>
