@@ -17,7 +17,14 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var paths = GetPaths();
+
+        Console.WriteLine(paths.Select(x => x.Value.Count).Sum());
+
+        return Task.CompletedTask;
+    }
 
     private Dictionary<Point, List<Point>> GetPaths()
     {
