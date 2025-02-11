@@ -28,9 +28,9 @@ public class PuzzleDataFileReader : IPuzzleDataReader
         return result;
     }
 
-    public List<List<int>> ReadIntLists(string inputFilePath)
+    public List<List<int>> ReadIntMatrix(string inputFilePath, string delimiter = Delimiter.Space)
     {
-        var allParts = ReadAllLineParts(inputFilePath, Delimiter.Space);
+        var allParts = ReadAllLineParts(inputFilePath, delimiter);
 
         return allParts
             .Select(x => x.Select(int.Parse).ToList())
@@ -50,5 +50,9 @@ public class PuzzleDataFileReader : IPuzzleDataReader
     }
 
     private static List<List<string>> ReadAllLineParts(List<string> lines, string delimiter) =>
-        lines.Select(x => x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()).ToList();
+        lines.Select(
+                x => !string.IsNullOrEmpty(delimiter)
+                    ? x.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList()
+                    : x.ToCharArray().Select(i => i.ToString()).ToList())
+            .ToList();
 }
