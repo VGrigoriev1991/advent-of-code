@@ -46,7 +46,48 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var data = puzzleDataReader.ReadCharMatrix(PuzzleDataFilePath);
+
+        var nodes = GetNodes(data);
+
+        var antiNodes = new HashSet<Point>();
+
+        foreach (var node in nodes)
+        {
+            foreach (var firstItem in node.Value)
+            {
+                foreach (var secondItem in node.Value)
+                {
+                    if (secondItem == firstItem)
+                    {
+                        continue;
+                    }
+
+                    var dx = secondItem.X - firstItem.X;
+                    var dy = secondItem.Y - firstItem.Y;
+
+                    for (var k = 0; k < 1000; k++)
+                    {
+                        var antiNodeTop = new Point(secondItem.X + (k * dx), secondItem.Y + (k * dy));
+                        if (data.IsValidPoint(antiNodeTop))
+                        {
+                            antiNodes.Add(antiNodeTop);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        Console.WriteLine(antiNodes.Count);
+
+        return Task.CompletedTask;
+    }
 
     private static Dictionary<char, List<Point>> GetNodes(List<List<char>> matrix)
     {
