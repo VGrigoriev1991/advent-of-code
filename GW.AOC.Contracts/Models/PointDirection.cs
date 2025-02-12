@@ -24,4 +24,12 @@ public static class PointDirection
         Bottom,
         BottomRight
     ];
+
+    public static readonly List<Point> Main =
+    [
+        Top,
+        Left,
+        Right,
+        Bottom
+    ];
 }

@@ -2,22 +2,22 @@
 
 namespace GW.AOC.Services.Extensions;
 
-public static class CharMatrixExtensions
+public static class MatrixExtensions
 {
-    public static bool ContainsItem(this List<List<char>> source, char symbol, Point point)
+    public static bool ContainsItem<T>(this List<List<T>> source, T value, Point point)
     {
         if (point is { X: >= 0, Y: >= 0 } && point.X < source.Count && point.Y < source[0].Count)
         {
-            return source[point.X][point.Y] == symbol;
+            return source[point.X][point.Y]!.Equals(value);
         }
 
         return false;
     }
 
-    public static bool IsValidPoint(this List<List<char>> source, Point point) =>
+    public static bool IsValidPoint<T>(this List<List<T>> source, Point point) =>
         point is { X: >= 0, Y: >= 0 } && point.X < source.Count && point.Y < source[0].Count;
 
-    public static List<Point> GetAllItemCoordinates(this List<List<char>> source, char symbol)
+    public static List<Point> GetAllItemCoordinates<T>(this List<List<T>> source, T value)
     {
         var result = new List<Point>();
 
@@ -25,7 +25,7 @@ public static class CharMatrixExtensions
         {
             for (var j = 0; j < source[0].Count; j++)
             {
-                if (source[i][j] == symbol)
+                if (source[i][j]!.Equals(value))
                 {
                     result.Add(new Point(i, j));
                 }
@@ -35,7 +35,7 @@ public static class CharMatrixExtensions
         return result;
     }
 
-    public static Point GetItemCoordinates(this List<List<char>> source, char symbol)
+    public static Point GetItemCoordinates<T>(this List<List<T>> source, T value)
     {
         var result = new Point();
 
@@ -43,7 +43,7 @@ public static class CharMatrixExtensions
         {
             for (var j = 0; j < source[0].Count; j++)
             {
-                if (source[i][j] == symbol)
+                if (source[i][j]!.Equals(value))
                 {
                     result.X = i;
                     result.Y = j;

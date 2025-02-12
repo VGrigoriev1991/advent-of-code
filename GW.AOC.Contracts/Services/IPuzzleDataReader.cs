@@ -1,4 +1,6 @@
-﻿namespace GW.AOC.Contracts.Services;
+﻿using GW.AOC.Contracts.Models;
+
+namespace GW.AOC.Contracts.Services;
 
 public interface IPuzzleDataReader
 {
@@ -6,7 +8,7 @@ public interface IPuzzleDataReader
 
     List<string> ReadAllLines(string inputFilePath);
 
-    List<List<int>> ReadIntLists(string inputFilePath);
+    List<List<int>> ReadIntMatrix(string inputFilePath, string delimiter = Delimiter.Space);
 
     List<List<string>> ReadAllLineParts(string inputFilePath, string delimiter);
 

@@ -7,7 +7,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 {
     public Task SolvePartOneAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntMatrix(PuzzleDataFilePath);
 
         var sum = data.LongCount(IsValid);
 
@@ -18,7 +18,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
     public Task SolvePartTwoAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntMatrix(PuzzleDataFilePath);
 
         var sum = 0L;
 

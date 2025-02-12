@@ -7,7 +7,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 {
     public Task SolvePartOneAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntMatrix(PuzzleDataFilePath);
 
         var left = data.Select(x => x.First()).Order().ToList();
         var right = data.Select(x => x.Last()).Order().ToList();
@@ -26,7 +26,7 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 
     public Task SolvePartTwoAsync(CancellationToken cancellationToken)
     {
-        var data = puzzleDataReader.ReadIntLists(PuzzleDataFilePath);
+        var data = puzzleDataReader.ReadIntMatrix(PuzzleDataFilePath);
 
         var left = data.Select(x => x.First()).Order().ToList();
         var right = data.Select(x => x.Last()).Order().ToList();
