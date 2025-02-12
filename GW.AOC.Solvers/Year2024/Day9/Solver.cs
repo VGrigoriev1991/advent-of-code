@@ -50,7 +50,86 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var data = puzzleDataReader.ReadAllText(PuzzleDataFilePath);
+
+        var blocks = Convert(data);
+
+        var spaceIndex = blocks.IndexOf(Delimiter.Dot);
+
+        var result = 0L;
+
+        int? currentItem = null;
+        var index = blocks.Count - 1;
+
+        while (index > spaceIndex)
+        {
+            if (blocks[index] == ".")
+            {
+                index--;
+                continue;
+            }
+
+            var firstItem = blocks[index];
+            var firstItemNumber = int.Parse(firstItem);
+            if (firstItemNumber >= currentItem)
+            {
+                index--;
+                continue;
+            }
+
+            currentItem = firstItemNumber;
+
+            var sequenceLength = 1;
+            index--;
+            while (blocks[index] == firstItem)
+            {
+                index--;
+                sequenceLength++;
+            }
+
+            while (spaceIndex < index)
+            {
+                if (blocks.Skip(spaceIndex).Take(sequenceLength).All(x => x == Delimiter.Dot))
+                {
+                    for (var i = spaceIndex; i < spaceIndex + sequenceLength; i++)
+                    {
+                        blocks[i] = firstItem;
+                    }
+
+                    for (var i = index + 1; i < index + 1 + sequenceLength; i++)
+                    {
+                        blocks[i] = Delimiter.Dot;
+                    }
+
+                    break;
+                }
+
+                spaceIndex = blocks.IndexOf(Delimiter.Dot, spaceIndex + 1);
+                if (spaceIndex <= 0)
+                {
+                    break;
+                }
+            }
+
+            spaceIndex = blocks.IndexOf(Delimiter.Dot);
+        }
+
+        for (var i = 0; i < blocks.Count; i++)
+        {
+            if (blocks[i] == ".")
+            {
+                continue;
+            }
+
+            result += i * int.Parse(blocks[i]);
+        }
+
+        Console.WriteLine(result);
+
+        return Task.CompletedTask;
+    }
 
     private static List<string> Convert(string source)
     {
