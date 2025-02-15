@@ -43,14 +43,48 @@ public static class MatrixExtensions
         {
             for (var j = 0; j < source[0].Count; j++)
             {
-                if (source[i][j]!.Equals(value))
+                if (!source[i][j]!.Equals(value))
                 {
-                    result.X = i;
-                    result.Y = j;
+                    continue;
                 }
+
+                result.X = i;
+                result.Y = j;
             }
         }
 
         return result;
+    }
+
+    public static Point? GetOppositeItemCoordinates<T>(this List<List<T>> source, T value)
+    {
+        for (var i = 0; i < source.Count; i++)
+        {
+            for (var j = 0; j < source[0].Count; j++)
+            {
+                if (source[i][j]!.Equals(value))
+                {
+                    continue;
+                }
+
+                return new Point(i, j);
+            }
+        }
+
+        return default;
+    }
+
+    public static void ReplaceItems<T>(this List<List<T>> source, T sourceValue, T destinationValue)
+    {
+        foreach (var rowIndex in source)
+        {
+            for (var columnIndex = 0; columnIndex < source[0].Count; columnIndex++)
+            {
+                if (rowIndex[columnIndex]!.Equals(sourceValue))
+                {
+                    rowIndex[columnIndex] = destinationValue;
+                }
+            }
+        }
     }
 }
