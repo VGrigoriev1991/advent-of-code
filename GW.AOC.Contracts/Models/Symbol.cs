@@ -13,4 +13,6 @@ public static class Symbol
     public const char Plus = '+';
     public const char At = '@';
     public const char Zero = '0';
+    public const char SquareBracketOpen = '[';
+    public const char SquareBracketClose = ']';
 }
