@@ -8,29 +8,19 @@ namespace GW.AOC.Solvers.Year2024.Day14;
 
 public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
 {
+    private const int SizeX = 101;
+    private const int SizeY = 103;
+
     public Task SolvePartOneAsync(CancellationToken cancellationToken)
     {
         var robots = ReadData();
 
-        const int sizeX = 101;
-        const int sizeY = 103;
         const int movesCount = 100;
 
-        const int middleX = sizeX / 2;
-        const int middleY = sizeY / 2;
+        const int middleX = SizeX / 2;
+        const int middleY = SizeY / 2;
 
-        var finalPositions = new List<Point>();
-        foreach (var robot in robots)
-        {
-            var finalPositionX = (robot.Position.X + (robot.Move.X * movesCount)) % sizeX;
-            var finalPositionY = (robot.Position.Y + (robot.Move.Y * movesCount)) % sizeY;
-
-            var finalPosition = new Point(
-                finalPositionX >= 0 ? finalPositionX : sizeX + finalPositionX,
-                finalPositionY >= 0 ? finalPositionY : sizeY + finalPositionY);
-
-            finalPositions.Add(finalPosition);
-        }
+        var finalPositions = GetNextRobotPositions(robots, movesCount);
 
         var counts = new int[4];
         foreach (var finalPosition in finalPositions)
@@ -65,7 +55,30 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
         return Task.CompletedTask;
     }
 
-    public Task SolvePartTwoAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task SolvePartTwoAsync(CancellationToken cancellationToken)
+    {
+        var robots = ReadData();
+
+        var movesCount = 100;
+
+        while (true)
+        {
+            movesCount++;
+
+            var finalPositions = GetNextRobotPositions(robots, movesCount);
+
+            var count = finalPositions.ToLookup(x => x).Count;
+            if (count != robots.Count)
+            {
+                continue;
+            }
+
+            Console.WriteLine(movesCount);
+            break;
+        }
+
+        return Task.CompletedTask;
+    }
 
     private List<Robot> ReadData()
     {
@@ -86,6 +99,25 @@ public class Solver(IPuzzleDataReader puzzleDataReader) : SolverBase, ISolver
                         };
                 })
             .ToList();
+
+        return result;
+    }
+
+    private static List<Point> GetNextRobotPositions(List<Robot> robots, int movesCount)
+    {
+        List<Point> result = [];
+
+        foreach (var robot in robots)
+        {
+            var finalPositionX = (robot.Position.X + (robot.Move.X * movesCount)) % SizeX;
+            var finalPositionY = (robot.Position.Y + (robot.Move.Y * movesCount)) % SizeY;
+
+            var finalPosition = new Point(
+                finalPositionX >= 0 ? finalPositionX : SizeX + finalPositionX,
+                finalPositionY >= 0 ? finalPositionY : SizeY + finalPositionY);
+
+            result.Add(finalPosition);
+        }
 
         return result;
     }
