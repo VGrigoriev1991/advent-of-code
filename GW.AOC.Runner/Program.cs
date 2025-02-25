@@ -9,7 +9,7 @@ var serviceProvider = new ServiceCollection()
 var cancellationTokenSource = new CancellationTokenSource();
 
 const ushort year = 2024;
-const ushort day = 14;
+const ushort day = 15;
 
 try
 {
