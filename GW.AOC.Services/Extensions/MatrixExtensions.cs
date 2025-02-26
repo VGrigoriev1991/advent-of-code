@@ -56,6 +56,15 @@ public static class MatrixExtensions
         return result;
     }
 
+    public static Point GetItemCoordinates<T>(this List<List<T>> source, T value, T newValue)
+    {
+        var result = source.GetItemCoordinates(value);
+
+        source[result.X][result.Y] = newValue;
+
+        return result;
+    }
+
     public static Point? GetOppositeItemCoordinates<T>(this List<List<T>> source, T value)
     {
         for (var i = 0; i < source.Count; i++)
