@@ -32,4 +32,12 @@ public static class PointDirection
         Right,
         Bottom
     ];
+
+    public static readonly Dictionary<char, Point> ArrowDirections = new()
+    {
+        { Symbol.Caret, Top },
+        { Symbol.GreaterThan, Right },
+        { Symbol.V, Bottom },
+        { Symbol.LessThan, Left },
+    };
 }
