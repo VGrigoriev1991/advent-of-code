@@ -7,7 +7,11 @@ public static class Symbol
     public const char LessThan = '<';
     public const char V = 'v';
     public const char O = 'o';
+
+    public const char BigE = 'E';
     public const char BigO = 'O';
+    public const char BigS = 'S';
+
     public const char Dot = '.';
     public const char Sharp = '#';
     public const char Plus = '+';
